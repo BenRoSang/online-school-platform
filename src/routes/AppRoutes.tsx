@@ -15,6 +15,7 @@ import { CourseDetailsPage } from '../pages/CourseDetailsPage'
 import { CreateCoursePage } from '../pages/CreateCoursePage'
 import { EditCoursePage } from '../pages/EditCoursePage'
 import { TeacherCoursesPage } from '../pages/TeacherCoursesPage'
+import { CurriculumEditorPage } from '../pages/CurriculumEditorPage'
 
 export function AppRoutes() {
   return (
@@ -39,6 +40,7 @@ export function AppRoutes() {
           <Route path="teacher/courses" element={<TeacherCoursesPage />} />
           <Route path="teacher/courses/new" element={<CreateCoursePage />} />
           <Route path="teacher/courses/:id/edit" element={<EditCoursePage />} />
+          <Route path="teacher/courses/:id/curriculum" element={<CurriculumEditorPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Route>

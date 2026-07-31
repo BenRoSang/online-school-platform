@@ -4,9 +4,9 @@ A portfolio project for an online teaching platform where teachers create
 courses and students enrol, watch lessons, complete assignments, and track
 their progress.
 
-This repository currently contains **Section 5 — Teacher Course Management**.
-Teachers can create, edit, publish, archive, and safely delete their own draft
-courses through role-protected Express endpoints.
+This repository currently contains **Section 6 — Curriculum Management**.
+Teachers can build ordered course sections and lessons through ownership-protected
+Express endpoints, including validated YouTube video references.
 
 ## Architecture
 
@@ -163,11 +163,13 @@ migration workflow, and seed credentials.
 | Backend | `GET /api/teacher/courses/:id` | Load an owned course for editing |
 | Backend | `PUT /api/teacher/courses/:id` | Update an owned course and its status |
 | Backend | `DELETE /api/teacher/courses/:id` | Delete an owned draft course |
+| Backend | `/api/teacher/courses/:id/curriculum` | Manage owned sections and lessons |
 | Frontend | `/student` | Student-only dashboard placeholder |
 | Frontend | `/teacher` | Teacher dashboard and course summary |
 | Frontend | `/teacher/courses` | Teacher's course management list |
 | Frontend | `/teacher/courses/new` | Create a course |
 | Frontend | `/teacher/courses/:id/edit` | Edit an owned course |
+| Frontend | `/teacher/courses/:id/curriculum` | Edit ordered sections and lessons |
 | Frontend | `/profile` | Authenticated profile |
 
 ## Authentication model
@@ -182,4 +184,4 @@ migration workflow, and seed credentials.
 ## Development roadmap
 
 Development continues one section at a time. The next section will implement
-curriculum management for course sections and lessons.
+student enrolment in published courses.

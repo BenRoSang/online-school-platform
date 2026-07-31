@@ -21,6 +21,7 @@ The backend currently provides:
 - public published-course listing and title search;
 - published course details with teacher, section, and lesson information.
 - teacher-owned course creation, editing, status management, and draft deletion.
+- ownership-protected section and lesson CRUD with ordering and YouTube validation.
 
 Draft and archived courses are excluded from both public catalogue endpoints.
 
@@ -149,6 +150,15 @@ All routes below require a valid teacher access token:
 Ownership is included in every read and write query. Published and archived
 courses cannot be deleted; they can first be changed back to draft if removal
 is intended.
+
+## Curriculum endpoints
+
+Curriculum routes are nested below
+`/api/teacher/courses/:courseId/curriculum`. Teachers can list the curriculum,
+create/edit/delete sections and lessons, and submit ordered ID lists for simple
+up/down reordering. Every operation verifies course ownership. Lesson video
+input accepts an 11-character YouTube ID, a `youtube.com/watch` URL, a Shorts
+URL, or a `youtu.be` URL and stores only the normalized video ID.
 
 ## Verification
 

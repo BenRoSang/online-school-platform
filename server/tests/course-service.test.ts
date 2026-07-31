@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 import { CourseRepository } from '../src/modules/courses/course.repository.js'
 import { CourseService } from '../src/modules/courses/course.service.js'
+import { CurriculumRepository } from '../src/modules/curriculum/curriculum.repository.js'
+import { CurriculumService } from '../src/modules/curriculum/curriculum.service.js'
 
 describe('teacher course ownership', () => {
   it('does not expose a course that is not owned by the teacher', async () => {
@@ -15,5 +17,16 @@ describe('teacher course ownership', () => {
         '10000000-0000-4000-8000-000000000002',
       ),
     ).rejects.toMatchObject({ statusCode: 404, code: 'COURSE_NOT_FOUND' })
+  })
+})
+
+describe('curriculum ownership', () => {
+  it('blocks curriculum access when the course belongs to another teacher', async () => {
+    const repository = { findOwnedCurriculum: vi.fn().mockResolvedValue(null) } as unknown as CurriculumRepository
+    const service = new CurriculumService(repository)
+    await expect(service.get(
+      '30000000-0000-4000-8000-000000000001',
+      '10000000-0000-4000-8000-000000000002',
+    )).rejects.toMatchObject({ statusCode: 404, code: 'COURSE_NOT_FOUND' })
   })
 })

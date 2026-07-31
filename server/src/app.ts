@@ -7,6 +7,7 @@ import { getEnvironment } from './config/env.js'
 import { createAuthRouter } from './modules/auth/auth.routes.js'
 import { createCourseRouter } from './modules/courses/course.routes.js'
 import { createTeacherCourseRouter } from './modules/courses/teacher-course.routes.js'
+import { createCurriculumRouter } from './modules/curriculum/curriculum.routes.js'
 
 interface CreateAppOptions {
   clientUrl?: string
@@ -40,6 +41,7 @@ export function createApp(options: CreateAppOptions = {}) {
   app.use('/api/auth', createAuthRouter())
   app.use('/api/courses', createCourseRouter())
   app.use('/api/teacher/courses', createTeacherCourseRouter())
+  app.use('/api/teacher/courses/:courseId/curriculum', createCurriculumRouter())
 
   app.use(notFoundHandler)
   app.use(errorHandler)
