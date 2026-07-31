@@ -9,6 +9,7 @@ import { createCourseRouter } from './modules/courses/course.routes.js'
 import { createTeacherCourseRouter } from './modules/courses/teacher-course.routes.js'
 import { createCurriculumRouter } from './modules/curriculum/curriculum.routes.js'
 import { createEnrolmentRouter } from './modules/enrolments/enrolment.routes.js'
+import { createLearningRouter } from './modules/learning/learning.routes.js'
 
 interface CreateAppOptions {
   clientUrl?: string
@@ -44,6 +45,7 @@ export function createApp(options: CreateAppOptions = {}) {
   app.use('/api/teacher/courses', createTeacherCourseRouter())
   app.use('/api/teacher/courses/:courseId/curriculum', createCurriculumRouter())
   app.use('/api/enrolments', createEnrolmentRouter())
+  app.use('/api/learning', createLearningRouter())
 
   app.use(notFoundHandler)
   app.use(errorHandler)

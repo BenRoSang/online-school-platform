@@ -23,6 +23,7 @@ The backend currently provides:
 - teacher-owned course creation, editing, status management, and draft deletion.
 - ownership-protected section and lesson CRUD with ordering and YouTube validation.
 - published-course enrolment and a student-owned course list.
+- public preview and enrolment-protected lesson playback data.
 
 Draft and archived courses are excluded from both public catalogue endpoints.
 
@@ -167,6 +168,14 @@ URL, or a `youtu.be` URL and stores only the normalized video ID.
 token. The authenticated user ID always comes from that token and cannot be
 selected in the request body. Enrolment is limited to published courses, and
 the database unique constraint plus an atomic insert prevents duplicates.
+
+## Lesson player endpoint
+
+`GET /api/learning/courses/:slug/lessons/:lessonId` accepts optional access-token
+authentication. Preview lessons are public; all other lessons require a student
+enrolment in the published course. The selected lesson's YouTube ID is returned
+only after authorization. Locked sidebar items never expose video IDs, and
+previous/next navigation includes only lessons the current visitor can access.
 
 ## Verification
 

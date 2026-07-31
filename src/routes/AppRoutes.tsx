@@ -17,6 +17,7 @@ import { EditCoursePage } from '../pages/EditCoursePage'
 import { TeacherCoursesPage } from '../pages/TeacherCoursesPage'
 import { CurriculumEditorPage } from '../pages/CurriculumEditorPage'
 import { StudentCoursesPage } from '../pages/StudentCoursesPage'
+import { LessonPlayerPage } from '../pages/LessonPlayerPage'
 
 export function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ export function AppRoutes() {
         <Route index element={<HomePage />} />
         <Route path="courses" element={<CourseCataloguePage />} />
         <Route path="courses/:slug" element={<CourseDetailsPage />} />
+        <Route path="courses/:slug/learn/:lessonId" element={<LessonPlayerPage />} />
         <Route element={<GuestRoute />}>
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />

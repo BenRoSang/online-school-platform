@@ -9,4 +9,5 @@ export interface EnrolledCourse {
   teacherName: string
   sectionCount: number
   lessonCount: number
+  firstLessonId: string | null
 }

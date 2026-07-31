@@ -4,9 +4,9 @@ A portfolio project for an online teaching platform where teachers create
 courses and students enrol, watch lessons, complete assignments, and track
 their progress.
 
-This repository currently contains **Section 7 — Student Enrolment**. Students
-can join published courses and access their personal course list through
-student-only Express endpoints.
+This repository currently contains **Section 8 — Lesson Player**. Public users
+can watch preview lessons, while enrolled students can open the complete course
+through an enrolment-protected, responsive video player.
 
 ## Architecture
 
@@ -166,8 +166,10 @@ migration workflow, and seed credentials.
 | Backend | `/api/teacher/courses/:id/curriculum` | Manage owned sections and lessons |
 | Backend | `GET /api/enrolments` | List the authenticated student's courses |
 | Backend | `POST /api/enrolments` | Enrol the authenticated student |
+| Backend | `GET /api/learning/courses/:slug/lessons/:lessonId` | Open an authorized lesson |
 | Frontend | `/student` | Student dashboard and enrolment summary |
 | Frontend | `/student/courses` | Student's enrolled courses |
+| Frontend | `/courses/:slug/learn/:lessonId` | Responsive lesson player |
 | Frontend | `/teacher` | Teacher dashboard and course summary |
 | Frontend | `/teacher/courses` | Teacher's course management list |
 | Frontend | `/teacher/courses/new` | Create a course |
@@ -187,4 +189,4 @@ migration workflow, and seed credentials.
 ## Development roadmap
 
 Development continues one section at a time. The next section will implement
-the lesson player and enrolment-based lesson access.
+lesson completion and student progress tracking.

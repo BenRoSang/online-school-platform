@@ -29,6 +29,7 @@ export class EnrolmentService {
         (total, section) => total + section._count.lessons,
         0,
       ),
+      firstLessonId: enrolment.course.sections.find((section) => section.lessons[0])?.lessons[0]?.id ?? null,
     }))
   }
 }

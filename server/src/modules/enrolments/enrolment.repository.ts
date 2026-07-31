@@ -31,7 +31,13 @@ export class EnrolmentRepository {
             description: true,
             thumbnailUrl: true,
             teacher: { select: { fullName: true } },
-            sections: { select: { _count: { select: { lessons: true } } } },
+            sections: {
+              orderBy: { position: 'asc' },
+              select: {
+                _count: { select: { lessons: true } },
+                lessons: { orderBy: { position: 'asc' }, take: 1, select: { id: true } },
+              },
+            },
           },
         },
       },
