@@ -12,6 +12,9 @@ import { GuestRoute } from './GuestRoute'
 import { ProtectedRoute } from './ProtectedRoute'
 import { CourseCataloguePage } from '../pages/CourseCataloguePage'
 import { CourseDetailsPage } from '../pages/CourseDetailsPage'
+import { CreateCoursePage } from '../pages/CreateCoursePage'
+import { EditCoursePage } from '../pages/EditCoursePage'
+import { TeacherCoursesPage } from '../pages/TeacherCoursesPage'
 
 export function AppRoutes() {
   return (
@@ -33,6 +36,9 @@ export function AppRoutes() {
         </Route>
         <Route element={<ProtectedRoute allowedRoles={['TEACHER']} />}>
           <Route path="teacher" element={<TeacherDashboardPage />} />
+          <Route path="teacher/courses" element={<TeacherCoursesPage />} />
+          <Route path="teacher/courses/new" element={<CreateCoursePage />} />
+          <Route path="teacher/courses/:id/edit" element={<EditCoursePage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Route>

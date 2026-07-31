@@ -20,6 +20,7 @@ The backend currently provides:
 - Zod-validated authentication requests.
 - public published-course listing and title search;
 - published course details with teacher, section, and lesson information.
+- teacher-owned course creation, editing, status management, and draft deletion.
 
 Draft and archived courses are excluded from both public catalogue endpoints.
 
@@ -132,6 +133,22 @@ with curriculum plus one draft course for public-access verification.
 
 These routes are intentionally public. Publication status is enforced in the
 database queries, so a draft or archived course slug returns `404`.
+
+## Teacher course endpoints
+
+All routes below require a valid teacher access token:
+
+| Method and path | Purpose |
+| --- | --- |
+| `GET /api/teacher/courses` | List the authenticated teacher's courses |
+| `POST /api/teacher/courses` | Create a course |
+| `GET /api/teacher/courses/:id` | Load an owned course |
+| `PUT /api/teacher/courses/:id` | Edit details or publication status |
+| `DELETE /api/teacher/courses/:id` | Delete an owned draft course |
+
+Ownership is included in every read and write query. Published and archived
+courses cannot be deleted; they can first be changed back to draft if removal
+is intended.
 
 ## Verification
 

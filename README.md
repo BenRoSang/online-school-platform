@@ -4,9 +4,9 @@ A portfolio project for an online teaching platform where teachers create
 courses and students enrol, watch lessons, complete assignments, and track
 their progress.
 
-This repository currently contains **Section 4 — Public Course Catalogue**.
-Visitors can search published courses, inspect course details and curriculum,
-and use the existing Express-backed authentication flow.
+This repository currently contains **Section 5 — Teacher Course Management**.
+Teachers can create, edit, publish, archive, and safely delete their own draft
+courses through role-protected Express endpoints.
 
 ## Architecture
 
@@ -158,8 +158,16 @@ migration workflow, and seed credentials.
 | Backend | `GET /api/auth/me` | Load the authenticated profile |
 | Backend | `GET /api/courses` | List/search published courses |
 | Backend | `GET /api/courses/:slug` | Load a published course and curriculum |
+| Backend | `GET /api/teacher/courses` | List the authenticated teacher's courses |
+| Backend | `POST /api/teacher/courses` | Create a teacher-owned course |
+| Backend | `GET /api/teacher/courses/:id` | Load an owned course for editing |
+| Backend | `PUT /api/teacher/courses/:id` | Update an owned course and its status |
+| Backend | `DELETE /api/teacher/courses/:id` | Delete an owned draft course |
 | Frontend | `/student` | Student-only dashboard placeholder |
-| Frontend | `/teacher` | Teacher-only dashboard placeholder |
+| Frontend | `/teacher` | Teacher dashboard and course summary |
+| Frontend | `/teacher/courses` | Teacher's course management list |
+| Frontend | `/teacher/courses/new` | Create a course |
+| Frontend | `/teacher/courses/:id/edit` | Edit an owned course |
 | Frontend | `/profile` | Authenticated profile |
 
 ## Authentication model
@@ -174,4 +182,4 @@ migration workflow, and seed credentials.
 ## Development roadmap
 
 Development continues one section at a time. The next section will implement
-teacher course management.
+curriculum management for course sections and lessons.

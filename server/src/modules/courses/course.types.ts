@@ -27,3 +27,18 @@ export interface PublicCourseSection {
 export interface PublicCourseDetails extends PublicCourseSummary {
   sections: PublicCourseSection[]
 }
+
+export type TeacherCourseStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+
+export interface TeacherCourse {
+  id: string
+  title: string
+  slug: string
+  description: string
+  thumbnailUrl: string | null
+  status: TeacherCourseStatus
+  sectionCount: number
+  lessonCount: number
+  createdAt: Date
+  updatedAt: Date
+}
