@@ -32,12 +32,14 @@ export function NavigationBar() {
 
         {user ? (
           <div className="flex items-center gap-1">
+            <NavLink to="/courses" className={navLinkClass}>Courses</NavLink>
             <NavLink to="/dashboard" className={navLinkClass}>Dashboard</NavLink>
             <NavLink to="/profile" className={navLinkClass}>{user.fullName}</NavLink>
             <button type="button" onClick={() => void logout()} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100">Log out</button>
           </div>
         ) : (
           <div className="flex items-center gap-1">
+            <NavLink to="/courses" className={navLinkClass}>Courses</NavLink>
             <NavLink to="/login" className={navLinkClass}>Log in</NavLink>
             <NavLink to="/register" className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700">Get started</NavLink>
           </div>

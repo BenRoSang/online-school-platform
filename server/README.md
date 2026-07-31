@@ -18,9 +18,10 @@ The backend currently provides:
 - rotated HTTP-only refresh-token cookies and database revocation;
 - current-user lookup and reusable authentication/role middleware;
 - Zod-validated authentication requests.
+- public published-course listing and title search;
+- published course details with teacher, section, and lesson information.
 
-Course and learning REST endpoints are intentionally deferred to their numbered
-development sections.
+Draft and archived courses are excluded from both public catalogue endpoints.
 
 ## Folder structure
 
@@ -118,8 +119,19 @@ These credentials are for local development only:
 | Teacher | `teacher@example.com` | `Teacher123!` |
 | Student | `student@example.com` | `Student123!` |
 
-The seed hashes both passwords with bcrypt. Authentication endpoints will be
-implemented in Section 3.
+The seed hashes both passwords with bcrypt and includes one published course
+with curriculum plus one draft course for public-access verification.
+
+## Public course endpoints
+
+| Method and path | Purpose |
+| --- | --- |
+| `GET /api/courses` | List published courses |
+| `GET /api/courses?search=photo` | Search published courses by title |
+| `GET /api/courses/:slug` | Load published course details and curriculum |
+
+These routes are intentionally public. Publication status is enforced in the
+database queries, so a draft or archived course slug returns `404`.
 
 ## Verification
 

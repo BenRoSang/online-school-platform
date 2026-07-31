@@ -4,9 +4,9 @@ A portfolio project for an online teaching platform where teachers create
 courses and students enrol, watch lessons, complete assignments, and track
 their progress.
 
-This repository currently contains **Section 3 — REST Authentication**. The
-React application restores secure cookie sessions through the Express API,
-which manages credentials, tokens, roles, and PostgreSQL access.
+This repository currently contains **Section 4 — Public Course Catalogue**.
+Visitors can search published courses, inspect course details and curriculum,
+and use the existing Express-backed authentication flow.
 
 ## Architecture
 
@@ -145,8 +145,10 @@ migration workflow, and seed credentials.
 | Application | Route | Purpose |
 | --- | --- | --- |
 | Frontend | `/` | Home page |
-| Frontend | `/login` | Login placeholder |
-| Frontend | `/register` | Registration placeholder |
+| Frontend | `/courses` | Search published courses |
+| Frontend | `/courses/:slug` | Published course details and curriculum |
+| Frontend | `/login` | Log in |
+| Frontend | `/register` | Create a student or teacher account |
 | Frontend | Any unknown route | Not Found page |
 | Backend | `GET /api/health` | API health check |
 | Backend | `POST /api/auth/register` | Register a student or teacher |
@@ -154,6 +156,8 @@ migration workflow, and seed credentials.
 | Backend | `POST /api/auth/refresh` | Rotate the refresh token |
 | Backend | `POST /api/auth/logout` | Revoke the refresh token |
 | Backend | `GET /api/auth/me` | Load the authenticated profile |
+| Backend | `GET /api/courses` | List/search published courses |
+| Backend | `GET /api/courses/:slug` | Load a published course and curriculum |
 | Frontend | `/student` | Student-only dashboard placeholder |
 | Frontend | `/teacher` | Teacher-only dashboard placeholder |
 | Frontend | `/profile` | Authenticated profile |
@@ -170,4 +174,4 @@ migration workflow, and seed credentials.
 ## Development roadmap
 
 Development continues one section at a time. The next section will implement
-the public course catalogue and course details through REST endpoints.
+teacher course management.

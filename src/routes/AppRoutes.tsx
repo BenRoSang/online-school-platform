@@ -10,12 +10,16 @@ import { StudentDashboardPage } from '../pages/StudentDashboardPage'
 import { TeacherDashboardPage } from '../pages/TeacherDashboardPage'
 import { GuestRoute } from './GuestRoute'
 import { ProtectedRoute } from './ProtectedRoute'
+import { CourseCataloguePage } from '../pages/CourseCataloguePage'
+import { CourseDetailsPage } from '../pages/CourseDetailsPage'
 
 export function AppRoutes() {
   return (
     <Routes>
       <Route element={<ApplicationLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="courses" element={<CourseCataloguePage />} />
+        <Route path="courses/:slug" element={<CourseDetailsPage />} />
         <Route element={<GuestRoute />}>
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />

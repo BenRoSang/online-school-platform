@@ -5,6 +5,7 @@ import helmet from 'helmet'
 import { errorHandler, notFoundHandler } from './middleware/error-handler.js'
 import { getEnvironment } from './config/env.js'
 import { createAuthRouter } from './modules/auth/auth.routes.js'
+import { createCourseRouter } from './modules/courses/course.routes.js'
 
 interface CreateAppOptions {
   clientUrl?: string
@@ -36,6 +37,7 @@ export function createApp(options: CreateAppOptions = {}) {
   })
 
   app.use('/api/auth', createAuthRouter())
+  app.use('/api/courses', createCourseRouter())
 
   app.use(notFoundHandler)
   app.use(errorHandler)
