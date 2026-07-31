@@ -7,6 +7,11 @@ import { getEnvironment } from './config/env.js'
 const environment = getEnvironment()
 const server = createServer(createApp())
 
+server.on('error', (error) => {
+  console.error('Failed to start API server', error)
+  process.exitCode = 1
+})
+
 server.listen(environment.PORT, () => {
   console.log(`API listening on http://localhost:${environment.PORT}`)
 })
