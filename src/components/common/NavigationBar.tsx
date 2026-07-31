@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { useAuth } from '../../features/auth/context/useAuth'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
@@ -8,6 +9,7 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   }`
 
 export function NavigationBar() {
+  const { user, logout } = useAuth()
   return (
     <header className="border-b border-slate-200 bg-white">
       <nav
@@ -28,17 +30,18 @@ export function NavigationBar() {
           <span>Online School</span>
         </NavLink>
 
-        <div className="flex items-center gap-1">
-          <NavLink to="/login" className={navLinkClass}>
-            Log in
-          </NavLink>
-          <NavLink
-            to="/register"
-            className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-          >
-            Get started
-          </NavLink>
-        </div>
+        {user ? (
+          <div className="flex items-center gap-1">
+            <NavLink to="/dashboard" className={navLinkClass}>Dashboard</NavLink>
+            <NavLink to="/profile" className={navLinkClass}>{user.fullName}</NavLink>
+            <button type="button" onClick={() => void logout()} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100">Log out</button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-1">
+            <NavLink to="/login" className={navLinkClass}>Log in</NavLink>
+            <NavLink to="/register" className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700">Get started</NavLink>
+          </div>
+        )}
       </nav>
     </header>
   )

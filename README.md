@@ -4,10 +4,9 @@ A portfolio project for an online teaching platform where teachers create
 courses and students enrol, watch lessons, complete assignments, and track
 their progress.
 
-This repository currently contains the revised **Section 2 — Express API and
-PostgreSQL Database Schema**. The React application shell from Section 1 is
-paired with an Express/TypeScript backend foundation and a Prisma-managed
-PostgreSQL data model.
+This repository currently contains **Section 3 — REST Authentication**. The
+React application restores secure cookie sessions through the Express API,
+which manages credentials, tokens, roles, and PostgreSQL access.
 
 ## Architecture
 
@@ -41,7 +40,7 @@ authorization, validation, and database access belong to the Express API.
 - Node.js, Express 5, and TypeScript
 - PostgreSQL and Prisma ORM
 - Zod environment and request validation
-- JWT access/refresh tokens and bcrypt (implemented in Section 3)
+- JWT access/refresh tokens and bcrypt
 - Multer and external/local PDF storage (implemented in a later section)
 - Vitest and Supertest
 
@@ -150,9 +149,25 @@ migration workflow, and seed credentials.
 | Frontend | `/register` | Registration placeholder |
 | Frontend | Any unknown route | Not Found page |
 | Backend | `GET /api/health` | API health check |
+| Backend | `POST /api/auth/register` | Register a student or teacher |
+| Backend | `POST /api/auth/login` | Log in and create a session |
+| Backend | `POST /api/auth/refresh` | Rotate the refresh token |
+| Backend | `POST /api/auth/logout` | Revoke the refresh token |
+| Backend | `GET /api/auth/me` | Load the authenticated profile |
+| Frontend | `/student` | Student-only dashboard placeholder |
+| Frontend | `/teacher` | Teacher-only dashboard placeholder |
+| Frontend | `/profile` | Authenticated profile |
+
+## Authentication model
+
+- Passwords are hashed with bcrypt and are never returned by the API.
+- Access tokens are short-lived and kept only in React memory.
+- Refresh tokens are rotated in HTTP-only cookies.
+- Only SHA-256 refresh-token hashes are saved in PostgreSQL.
+- Registration permits `STUDENT` and `TEACHER`; it never permits `ADMIN`.
+- Frontend and backend role guards are separate security layers.
 
 ## Development roadmap
 
 Development continues one section at a time. The next section will implement
-the REST authentication module, password hashing, access and refresh tokens,
-HTTP-only cookies, profile loading, and role-protected frontend routes.
+the public course catalogue and course details through REST endpoints.

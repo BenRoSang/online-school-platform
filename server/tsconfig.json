@@ -20,7 +20,7 @@
     "types": ["node", "vitest/globals"]
   },
   "include": [
-    "src/**/*.ts",
+    "src/**/*",
     "tests/**/*.ts",
     "prisma/**/*.ts",
     "prisma.config.ts",

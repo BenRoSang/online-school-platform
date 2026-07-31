@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { createServer } from 'node:http'
 import { createApp } from './app.js'
-import { database } from './config/database.js'
+import { disconnectDatabase } from './config/database.js'
 import { getEnvironment } from './config/env.js'
 
 const environment = getEnvironment()
@@ -20,7 +20,7 @@ async function shutdown(signal: string) {
   console.log(`${signal} received, shutting down`)
 
   server.close(async (error) => {
-    await database.$disconnect()
+    await disconnectDatabase()
 
     if (error) {
       console.error(error)

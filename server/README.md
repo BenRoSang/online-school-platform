@@ -4,7 +4,7 @@ Express and TypeScript backend for the Online School Platform.
 
 ## Current scope
 
-Section 2 provides:
+The backend currently provides:
 
 - a strict TypeScript Express application shell;
 - security, CORS, cookie, JSON, 404, and error middleware;
@@ -12,10 +12,15 @@ Section 2 provides:
 - a PostgreSQL connection through Prisma's `pg` driver adapter;
 - the initial Prisma schema and SQL migration;
 - repeatable development seed data;
-- health-route and environment unit tests.
+- health-route and environment unit tests;
+- registration and login with bcrypt password hashing;
+- short-lived JWT access tokens;
+- rotated HTTP-only refresh-token cookies and database revocation;
+- current-user lookup and reusable authentication/role middleware;
+- Zod-validated authentication requests.
 
-JWT authentication and feature REST endpoints are intentionally deferred to
-their numbered development sections.
+Course and learning REST endpoints are intentionally deferred to their numbered
+development sections.
 
 ## Folder structure
 
