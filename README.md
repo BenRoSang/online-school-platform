@@ -1,112 +1,158 @@
 # Online School Platform
 
-A portfolio project for an online learning platform where teachers create
-courses and students enrol, watch lessons, and track their progress.
+A portfolio project for an online teaching platform where teachers create
+courses and students enrol, watch lessons, complete assignments, and track
+their progress.
 
-This repository currently contains **Section 1 — Project Setup**: the React
-application shell, public placeholder pages, routing, styling, and development
-configuration. Supabase-backed features will be added incrementally in later
-sections.
+This repository currently contains the revised **Section 2 — Express API and
+PostgreSQL Database Schema**. The React application shell from Section 1 is
+paired with an Express/TypeScript backend foundation and a Prisma-managed
+PostgreSQL data model.
 
-## Tech stack
+## Architecture
+
+```text
+React + TypeScript frontend
+            |
+            | REST API
+            v
+Express + TypeScript backend
+            |
+            ├── PostgreSQL through Prisma ORM
+            ├── PDF storage provider
+            ├── Email service
+            └── YouTube video provider
+```
+
+The browser never connects directly to PostgreSQL. Authentication,
+authorization, validation, and database access belong to the Express API.
+
+## Technology stack
+
+### Frontend
 
 - React and TypeScript
-- Vite
-- Tailwind CSS
-- React Router
-- TanStack Query
+- Vite and Tailwind CSS
+- React Router and TanStack Query
 - React Hook Form and Zod
-- Supabase JavaScript client
-- ESLint
+
+### Backend
+
+- Node.js, Express 5, and TypeScript
+- PostgreSQL and Prisma ORM
+- Zod environment and request validation
+- JWT access/refresh tokens and bcrypt (implemented in Section 3)
+- Multer and external/local PDF storage (implemented in a later section)
+- Vitest and Supertest
 
 ## Requirements
 
-- Node.js 22 or newer
+- Node.js 22.12 or newer
 - npm 10 or newer
+- PostgreSQL 16 or newer
 
 ## Local setup
 
-1. Clone the repository and enter the project directory.
-2. Install dependencies:
+1. Install frontend dependencies:
 
    ```bash
    npm install
    ```
 
-3. Create a local environment file from the example:
+2. Install backend dependencies:
+
+   ```bash
+   npm --prefix server install
+   ```
+
+3. Create the frontend environment file:
 
    ```bash
    cp .env.example .env
    ```
 
-4. Add your Supabase project values to `.env` when Supabase integration is
-   introduced:
+4. Create the backend environment file:
 
-   ```env
-   VITE_SUPABASE_URL=your-project-url
-   VITE_SUPABASE_ANON_KEY=your-anon-key
+   ```bash
+   cp server/.env.example server/.env
    ```
 
-5. Start the development server:
+5. Create the PostgreSQL database and update `server/.env` with its connection
+   string.
+
+6. Apply the database migration and load development data:
+
+   ```bash
+   npm --prefix server run prisma:migrate:dev -- --name initial-schema
+   npm --prefix server run prisma:seed
+   ```
+
+7. Start the backend in one terminal:
+
+   ```bash
+   npm run dev:server
+   ```
+
+8. Start the frontend in another terminal:
 
    ```bash
    npm run dev
    ```
 
-6. Open the local URL printed by Vite, normally
-   [http://localhost:5173](http://localhost:5173).
-
-The application can run for Section 1 with empty Supabase variables. Never put
-the Supabase service-role key in this frontend project.
-
-## Available scripts
-
-```bash
-npm run dev      # Start the Vite development server
-npm run lint     # Run ESLint
-npm run build    # Type-check and create a production build
-npm run preview  # Preview the production build locally
-```
-
-## Current routes
-
-| Route | Page |
-| --- | --- |
-| `/` | Home |
-| `/login` | Login placeholder |
-| `/register` | Registration placeholder |
-| Any unknown route | Not Found |
-
-## Project structure
-
-```text
-src/
-├── components/     # Reusable UI grouped by purpose
-├── features/       # Feature-specific UI and business logic
-├── hooks/          # Shared React hooks
-├── layouts/        # Route layouts
-├── lib/            # Third-party client configuration
-├── pages/          # Route-level page components
-├── routes/         # Application route definitions
-├── schemas/        # Zod validation schemas
-├── services/       # API and data access functions
-├── types/          # Shared TypeScript types
-└── utils/          # Reusable utility functions
-
-supabase/
-└── migrations/     # Database migrations added in Section 2
-```
+The frontend normally runs at `http://localhost:5173`, and the API normally
+runs at `http://localhost:5000`. Check the API at
+`http://localhost:5000/api/health`.
 
 ## Environment and security
 
-- `.env` and environment variants are ignored by Git.
-- `.env.example` contains variable names only and is safe to commit.
-- Only the public Supabase anonymous key belongs in the frontend.
-- The Supabase service-role key must never be exposed to Vite or committed.
+- Frontend variables use the `VITE_` prefix and are public to the browser.
+- Backend secrets belong only in `server/.env`.
+- `.env` files, generated Prisma Client files, build output, uploads, and
+  dependencies are ignored by Git.
+- Never commit database credentials, JWT secrets, password hashes from real
+  users, or storage-provider secrets.
+- PDF binaries are stored outside PostgreSQL; the database stores metadata and
+  relationships only.
+
+## Commands
+
+### Frontend
+
+```bash
+npm run dev
+npm run lint
+npm run build
+```
+
+### Backend
+
+```bash
+npm run dev:server
+npm run lint:server
+npm run build:server
+npm run test:server
+npm --prefix server run typecheck
+npm --prefix server run prisma:validate
+npm --prefix server run prisma:migrate:dev
+npm --prefix server run prisma:migrate:deploy
+npm --prefix server run prisma:seed
+```
+
+See [server/README.md](server/README.md) for the API structure, database models,
+migration workflow, and seed credentials.
+
+## Current routes
+
+| Application | Route | Purpose |
+| --- | --- | --- |
+| Frontend | `/` | Home page |
+| Frontend | `/login` | Login placeholder |
+| Frontend | `/register` | Registration placeholder |
+| Frontend | Any unknown route | Not Found page |
+| Backend | `GET /api/health` | API health check |
 
 ## Development roadmap
 
-Development follows the numbered sections in the project master prompt. Each
-section is implemented and verified separately before work starts on the next
-one. The next planned section is the Supabase database schema and Row Level
-Security policies.
+Development continues one section at a time. The next section will implement
+the REST authentication module, password hashing, access and refresh tokens,
+HTTP-only cookies, profile loading, and role-protected frontend routes.
