@@ -22,6 +22,7 @@ The backend currently provides:
 - published course details with teacher, section, and lesson information.
 - teacher-owned course creation, editing, status management, and draft deletion.
 - ownership-protected section and lesson CRUD with ordering and YouTube validation.
+- published-course enrolment and a student-owned course list.
 
 Draft and archived courses are excluded from both public catalogue endpoints.
 
@@ -159,6 +160,13 @@ create/edit/delete sections and lessons, and submit ordered ID lists for simple
 up/down reordering. Every operation verifies course ownership. Lesson video
 input accepts an 11-character YouTube ID, a `youtube.com/watch` URL, a Shorts
 URL, or a `youtu.be` URL and stores only the normalized video ID.
+
+## Student enrolment endpoints
+
+`GET /api/enrolments` and `POST /api/enrolments` require a student access
+token. The authenticated user ID always comes from that token and cannot be
+selected in the request body. Enrolment is limited to published courses, and
+the database unique constraint plus an atomic insert prevents duplicates.
 
 ## Verification
 

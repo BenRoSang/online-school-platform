@@ -1,10 +1,16 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { CourseThumbnail } from '../components/courses/CourseThumbnail'
 import { useCourse } from '../features/courses/hooks/useCourses'
+import { useAuth } from '../features/auth/context/useAuth'
+import { useCreateEnrolment, useEnrolments } from '../features/enrolments/hooks/useEnrolments'
 
 export function CourseDetailsPage() {
   const { slug } = useParams()
+  const navigate = useNavigate()
+  const { user } = useAuth()
   const { data: course, isPending, isError, refetch } = useCourse(slug)
+  const enrolments = useEnrolments()
+  const createEnrolment = useCreateEnrolment()
 
   if (isPending) {
     return <div className="mx-auto w-full max-w-6xl animate-pulse px-4 py-12 sm:px-6 lg:px-8"><div className="h-5 w-32 rounded bg-slate-200" /><div className="mt-8 grid gap-10 lg:grid-cols-2"><div className="aspect-video rounded-3xl bg-slate-200" /><div className="space-y-5"><div className="h-10 rounded bg-slate-200" /><div className="h-5 rounded bg-slate-100" /><div className="h-5 w-2/3 rounded bg-slate-100" /></div></div></div>
@@ -12,6 +18,15 @@ export function CourseDetailsPage() {
 
   if (isError || !course) {
     return <div className="mx-auto w-full max-w-3xl px-4 py-20 text-center"><h1 className="text-3xl font-bold text-slate-950">Course unavailable</h1><p className="mt-3 text-slate-600">This course may not exist or may not be published.</p><div className="mt-6 flex justify-center gap-4"><Link to="/courses" className="rounded-xl bg-brand-600 px-4 py-2 font-semibold text-white">Browse courses</Link><button type="button" onClick={() => refetch()} className="rounded-xl border border-slate-300 px-4 py-2 font-semibold text-slate-700">Try again</button></div></div>
+  }
+
+  const isEnrolled = enrolments.data?.some((item) => item.id === course.id) ?? false
+  const enrol = async () => {
+    if (!user) {
+      navigate('/login', { state: { from: `/courses/${course.slug}` } })
+      return
+    }
+    if (user.role === 'STUDENT' && !isEnrolled) await createEnrolment.mutateAsync(course.id)
   }
 
   return (
@@ -25,6 +40,10 @@ export function CourseDetailsPage() {
             <p className="mt-5 text-lg leading-8 text-slate-300">{course.description}</p>
             <p className="mt-6 font-semibold text-brand-100">Taught by {course.teacherName}</p>
             <div className="mt-5 flex gap-5 text-sm text-slate-300"><span>{course.sectionCount} sections</span><span>{course.lessonCount} lessons</span></div>
+            <div className="mt-8">
+              {isEnrolled ? <Link to="/student/courses" className="inline-block rounded-xl bg-emerald-500 px-5 py-3 font-semibold text-slate-950 hover:bg-emerald-400">Enrolled — continue learning</Link> : user?.role === 'TEACHER' || user?.role === 'ADMIN' ? <p className="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-slate-200">Student accounts can enrol in courses.</p> : <button type="button" onClick={() => void enrol()} disabled={createEnrolment.isPending} className="rounded-xl bg-brand-500 px-5 py-3 font-semibold text-white hover:bg-brand-600 disabled:opacity-60">{createEnrolment.isPending ? 'Enrolling…' : user ? 'Enrol for free' : 'Log in to enrol'}</button>}
+              {createEnrolment.isError && <p role="alert" className="mt-3 text-sm text-red-300">{createEnrolment.error.message}</p>}
+            </div>
           </div>
         </div>
       </section>

@@ -16,6 +16,7 @@ import { CreateCoursePage } from '../pages/CreateCoursePage'
 import { EditCoursePage } from '../pages/EditCoursePage'
 import { TeacherCoursesPage } from '../pages/TeacherCoursesPage'
 import { CurriculumEditorPage } from '../pages/CurriculumEditorPage'
+import { StudentCoursesPage } from '../pages/StudentCoursesPage'
 
 export function AppRoutes() {
   return (
@@ -34,6 +35,7 @@ export function AppRoutes() {
         </Route>
         <Route element={<ProtectedRoute allowedRoles={['STUDENT']} />}>
           <Route path="student" element={<StudentDashboardPage />} />
+          <Route path="student/courses" element={<StudentCoursesPage />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={['TEACHER']} />}>
           <Route path="teacher" element={<TeacherDashboardPage />} />
