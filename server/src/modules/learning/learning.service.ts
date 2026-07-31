@@ -22,6 +22,10 @@ export class LearningService {
     }
 
     const accessibleLessons = orderedLessons.filter((lesson) => enrolled || lesson.isPreview)
+    const completedLessonIds = enrolled
+      ? (await this.repository.findProgress(auth!.userId, course.id)).map((item) => item.lessonId)
+      : []
+    const completedSet = new Set(completedLessonIds)
     const navigationIndex = accessibleLessons.findIndex((lesson) => lesson.id === lessonId)
     return {
       course: {
@@ -36,11 +40,18 @@ export class LearningService {
             position: lesson.position,
             isPreview: lesson.isPreview,
             accessible: enrolled || lesson.isPreview,
+            completed: completedSet.has(lesson.id),
           })),
         })),
       },
       lesson: selectedLesson,
       enrolled,
+      completed: completedSet.has(selectedLesson.id),
+      completedLessonCount: completedLessonIds.length,
+      totalLessonCount: orderedLessons.length,
+      progressPercentage: orderedLessons.length === 0
+        ? 0
+        : Math.round((completedLessonIds.length / orderedLessons.length) * 100),
       previousLessonId: accessibleLessons[navigationIndex - 1]?.id ?? null,
       nextLessonId: accessibleLessons[navigationIndex + 1]?.id ?? null,
     }

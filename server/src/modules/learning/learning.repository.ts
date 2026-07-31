@@ -38,4 +38,11 @@ export class LearningRepository {
       select: { id: true },
     })
   }
+
+  findProgress(studentId: string, courseId: string) {
+    return getDatabase().lessonProgress.findMany({
+      where: { studentId, completed: true, lesson: { section: { courseId } } },
+      select: { lessonId: true },
+    })
+  }
 }

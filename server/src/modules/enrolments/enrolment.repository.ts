@@ -35,7 +35,16 @@ export class EnrolmentRepository {
               orderBy: { position: 'asc' },
               select: {
                 _count: { select: { lessons: true } },
-                lessons: { orderBy: { position: 'asc' }, take: 1, select: { id: true } },
+                lessons: {
+                  orderBy: { position: 'asc' },
+                  select: {
+                    id: true,
+                    progress: {
+                      where: { studentId, completed: true },
+                      select: { id: true },
+                    },
+                  },
+                },
               },
             },
           },

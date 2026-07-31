@@ -30,6 +30,18 @@ export class EnrolmentService {
         0,
       ),
       firstLessonId: enrolment.course.sections.find((section) => section.lessons[0])?.lessons[0]?.id ?? null,
+      completedLessonCount: enrolment.course.sections.reduce(
+        (total, section) => total + section.lessons.filter((lesson) => lesson.progress.length > 0).length,
+        0,
+      ),
+      progressPercentage: (() => {
+        const total = enrolment.course.sections.reduce((sum, section) => sum + section.lessons.length, 0)
+        const completed = enrolment.course.sections.reduce(
+          (sum, section) => sum + section.lessons.filter((lesson) => lesson.progress.length > 0).length,
+          0,
+        )
+        return total === 0 ? 0 : Math.round((completed / total) * 100)
+      })(),
     }))
   }
 }

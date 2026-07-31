@@ -10,4 +10,6 @@ export interface EnrolledCourse {
   sectionCount: number
   lessonCount: number
   firstLessonId: string | null
+  completedLessonCount: number
+  progressPercentage: number
 }

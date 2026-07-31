@@ -24,6 +24,7 @@ The backend currently provides:
 - ownership-protected section and lesson CRUD with ordering and YouTube validation.
 - published-course enrolment and a student-owned course list.
 - public preview and enrolment-protected lesson playback data.
+- student-owned lesson completion and calculated course progress.
 
 Draft and archived courses are excluded from both public catalogue endpoints.
 
@@ -176,6 +177,15 @@ authentication. Preview lessons are public; all other lessons require a student
 enrolment in the published course. The selected lesson's YouTube ID is returned
 only after authorization. Locked sidebar items never expose video IDs, and
 previous/next navigation includes only lessons the current visitor can access.
+
+## Progress endpoint
+
+`PUT /api/progress/lessons/:lessonId` accepts `{ "completed": true | false }`
+from authenticated students. The student identity comes from the access token,
+and the lesson must belong to one of that student's enrolled courses. Completion
+uses an upsert so it remains after refresh. Course percentages are calculated
+from completed lesson records and the current curriculum size. The browser
+stores the last-opened lesson ID locally per student and course for resume links.
 
 ## Verification
 

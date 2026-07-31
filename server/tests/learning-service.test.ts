@@ -36,9 +36,12 @@ describe('lesson access', () => {
     const repository = {
       findPublishedCourse: vi.fn().mockResolvedValue(course),
       findEnrolment: vi.fn().mockResolvedValue({ id: '60000000-0000-4000-8000-000000000001' }),
+      findProgress: vi.fn().mockResolvedValue([{ lessonId: previewId }]),
     } as unknown as LearningRepository
     const result = await new LearningService(repository).getLesson('photography', protectedId, { userId: '20000000-0000-4000-8000-000000000001', role: Role.STUDENT })
     expect(result.lesson.id).toBe(protectedId)
     expect(result.previousLessonId).toBe(previewId)
+    expect(result.progressPercentage).toBe(50)
+    expect(result.course.sections[0]?.lessons[0]?.completed).toBe(true)
   })
 })
