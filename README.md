@@ -4,8 +4,9 @@ A portfolio project for an online teaching platform where teachers create
 courses and students enrol, watch lessons, complete assignments, and track
 their progress.
 
-This repository currently contains **Section 10 — Dashboards**. Students and
-teachers receive role-specific, ownership-scoped learning and course summaries.
+This repository contains the completed MVP through **Section 11 — UI Polish
+and Testing**. It includes responsive student and teacher workflows, accessible
+feedback components, protected REST APIs, and automated frontend/backend tests.
 
 ## Architecture
 
@@ -120,6 +121,7 @@ runs at `http://localhost:5000`. Check the API at
 npm run dev
 npm run lint
 npm run build
+npm run test
 ```
 
 ### Backend
@@ -138,6 +140,22 @@ npm --prefix server run prisma:seed
 
 See [server/README.md](server/README.md) for the API structure, database models,
 migration workflow, and seed credentials.
+
+## Testing
+
+`npm test` runs the complete Vitest suite. It covers backend request schemas,
+authorization and business rules, dashboard/progress calculations, frontend
+utilities, and server-rendered checks for the critical course and lesson forms.
+The form tests verify required controls and disabled submission states without
+adding a browser-only test runtime.
+
+```bash
+npm run lint
+npm test
+npm run build
+npm run lint:server
+npm run build:server
+```
 
 ## Current routes
 
@@ -190,5 +208,104 @@ migration workflow, and seed credentials.
 
 ## Development roadmap
 
-Development continues one section at a time. The next section will focus on UI
-polish, accessibility, reusable feedback components, testing, and documentation.
+The portfolio MVP sections are complete. Payments, live classes, chat,
+certificates, and advanced analytics remain intentionally outside this version.
+
+## Screenshots
+
+Add final deployment screenshots here before publishing the portfolio:
+
+- `[Screenshot placeholder — public course catalogue]`
+- `[Screenshot placeholder — responsive lesson player]`
+- `[Screenshot placeholder — student dashboard]`
+- `[Screenshot placeholder — teacher curriculum editor]`
+
+## Database setup
+
+The original project outline mentioned Supabase, but the backend was explicitly
+changed to Express, Prisma, JWT authentication, and standard PostgreSQL. There
+is therefore no Supabase project, anon key, Storage bucket, or Row Level
+Security setup in this implementation. Equivalent authorization is enforced by
+Express middleware and ownership-filtered Prisma queries.
+
+For local PostgreSQL:
+
+1. Create an empty `online_school` database and a dedicated database user.
+2. Copy `server/.env.example` to `server/.env`.
+3. Set `DATABASE_URL` to the PostgreSQL connection string.
+4. Generate strong, different values for both JWT secrets.
+5. Apply the committed migrations:
+
+   ```bash
+   npm --prefix server run prisma:migrate:deploy
+   ```
+
+6. Optionally load the development accounts and sample course:
+
+   ```bash
+   npm --prefix server run prisma:seed
+   ```
+
+## Deployment
+
+The React SPA can be deployed to Vercel. The long-running Express API and
+PostgreSQL database should be deployed separately, for example on Render with
+Render Postgres, or with another managed PostgreSQL provider.
+
+### 1. Deploy the API
+
+Create a Render Web Service using `server` as the root directory:
+
+```text
+Build command: npm ci && npm run build
+Pre-deploy command: npm run prisma:migrate:deploy
+Start command: npm start
+Health check: /api/health
+```
+
+Set these server environment variables:
+
+```text
+NODE_ENV=production
+DATABASE_URL=<managed PostgreSQL connection string>
+JWT_ACCESS_SECRET=<random value of at least 32 characters>
+JWT_REFRESH_SECRET=<different random value of at least 32 characters>
+JWT_ACCESS_EXPIRES_IN=15m
+JWT_REFRESH_EXPIRES_IN_DAYS=7
+CLIENT_URL=https://your-frontend.vercel.app
+FILE_STORAGE_PROVIDER=local
+MAX_PDF_SIZE_MB=10
+LOCAL_UPLOAD_DIRECTORY=uploads
+```
+
+Production refresh cookies use `Secure`, `HttpOnly`, and `SameSite=None` so the
+Vercel frontend can restore sessions from a separately hosted HTTPS API. CORS
+accepts only the exact `CLIENT_URL`; do not include a trailing slash.
+
+### 2. Deploy the frontend to Vercel
+
+Import the repository in Vercel and use:
+
+```text
+Framework preset: Vite
+Build command: npm run build
+Output directory: dist
+```
+
+Set:
+
+```text
+VITE_API_URL=https://your-api.example.com/api
+```
+
+The committed `vercel.json` sends client-side routes such as `/courses/...` to
+`index.html`. After the first Vercel deployment, update the API's `CLIENT_URL`
+to the final Vercel production domain and redeploy the API.
+
+### 3. Production verification
+
+1. Open `/api/health` on the deployed API.
+2. Register a student and verify refresh survives a browser reload.
+3. Log in as a teacher, create and publish a course, section, and lesson.
+4. Enrol as the student, play the lesson, and mark it complete.
+5. Open a protected lesson in a private window and confirm access is denied.

@@ -11,7 +11,7 @@ function refreshCookieOptions(includeMaxAge = true): CookieOptions {
   const options: CookieOptions = {
     httpOnly: true,
     secure: environment.NODE_ENV === 'production',
-    sameSite: 'lax',
+    sameSite: environment.NODE_ENV === 'production' ? 'none' : 'lax',
     path: '/api/auth',
   }
 

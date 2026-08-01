@@ -3,6 +3,7 @@ import { CourseThumbnail } from '../components/courses/CourseThumbnail'
 import { useCourse } from '../features/courses/hooks/useCourses'
 import { useAuth } from '../features/auth/context/useAuth'
 import { useCreateEnrolment, useEnrolments } from '../features/enrolments/hooks/useEnrolments'
+import { useToast } from '../features/toasts/useToast'
 
 export function CourseDetailsPage() {
   const { slug } = useParams()
@@ -11,6 +12,7 @@ export function CourseDetailsPage() {
   const { data: course, isPending, isError, refetch } = useCourse(slug)
   const enrolments = useEnrolments()
   const createEnrolment = useCreateEnrolment()
+  const { showToast } = useToast()
 
   if (isPending) {
     return <div className="mx-auto w-full max-w-6xl animate-pulse px-4 py-12 sm:px-6 lg:px-8"><div className="h-5 w-32 rounded bg-slate-200" /><div className="mt-8 grid gap-10 lg:grid-cols-2"><div className="aspect-video rounded-3xl bg-slate-200" /><div className="space-y-5"><div className="h-10 rounded bg-slate-200" /><div className="h-5 rounded bg-slate-100" /><div className="h-5 w-2/3 rounded bg-slate-100" /></div></div></div>
@@ -28,7 +30,10 @@ export function CourseDetailsPage() {
       navigate('/login', { state: { from: `/courses/${course.slug}` } })
       return
     }
-    if (user.role === 'STUDENT' && !isEnrolled) await createEnrolment.mutateAsync(course.id)
+    if (user.role === 'STUDENT' && !isEnrolled) {
+      await createEnrolment.mutateAsync(course.id)
+      showToast('You are enrolled')
+    }
   }
 
   return (
