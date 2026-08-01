@@ -25,6 +25,7 @@ The backend currently provides:
 - published-course enrolment and a student-owned course list.
 - public preview and enrolment-protected lesson playback data.
 - student-owned lesson completion and calculated course progress.
+- role-scoped student and teacher dashboard analytics.
 
 Draft and archived courses are excluded from both public catalogue endpoints.
 
@@ -186,6 +187,15 @@ and the lesson must belong to one of that student's enrolled courses. Completion
 uses an upsert so it remains after refresh. Course percentages are calculated
 from completed lesson records and the current curriculum size. The browser
 stores the last-opened lesson ID locally per student and course for resume links.
+
+## Dashboard endpoints
+
+`GET /api/dashboard/student` returns enrolled-course, in-progress-course, and
+completed-lesson totals derived only from the authenticated student's records.
+`GET /api/dashboard/teacher` returns owned course status totals, a unique count
+of students enrolled across those courses, and the five most recently updated
+owned courses. Role middleware prevents either role from opening the other's
+dashboard endpoint.
 
 ## Verification
 

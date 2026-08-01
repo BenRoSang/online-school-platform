@@ -11,6 +11,7 @@ import { createCurriculumRouter } from './modules/curriculum/curriculum.routes.j
 import { createEnrolmentRouter } from './modules/enrolments/enrolment.routes.js'
 import { createLearningRouter } from './modules/learning/learning.routes.js'
 import { createProgressRouter } from './modules/progress/progress.routes.js'
+import { createDashboardRouter } from './modules/dashboard/dashboard.routes.js'
 
 interface CreateAppOptions {
   clientUrl?: string
@@ -48,6 +49,7 @@ export function createApp(options: CreateAppOptions = {}) {
   app.use('/api/enrolments', createEnrolmentRouter())
   app.use('/api/learning', createLearningRouter())
   app.use('/api/progress', createProgressRouter())
+  app.use('/api/dashboard', createDashboardRouter())
 
   app.use(notFoundHandler)
   app.use(errorHandler)

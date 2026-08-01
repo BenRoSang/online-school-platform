@@ -4,9 +4,8 @@ A portfolio project for an online teaching platform where teachers create
 courses and students enrol, watch lessons, complete assignments, and track
 their progress.
 
-This repository currently contains **Section 9 — Progress Tracking**. Enrolled
-students can persist lesson completion, view course percentages, and resume the
-most recently opened lesson.
+This repository currently contains **Section 10 — Dashboards**. Students and
+teachers receive role-specific, ownership-scoped learning and course summaries.
 
 ## Architecture
 
@@ -168,6 +167,8 @@ migration workflow, and seed credentials.
 | Backend | `POST /api/enrolments` | Enrol the authenticated student |
 | Backend | `GET /api/learning/courses/:slug/lessons/:lessonId` | Open an authorized lesson |
 | Backend | `PUT /api/progress/lessons/:lessonId` | Toggle the student's lesson completion |
+| Backend | `GET /api/dashboard/student` | Student learning summary |
+| Backend | `GET /api/dashboard/teacher` | Teacher course and enrolment summary |
 | Frontend | `/student` | Student dashboard and enrolment summary |
 | Frontend | `/student/courses` | Student's enrolled courses |
 | Frontend | `/courses/:slug/learn/:lessonId` | Responsive lesson player |
@@ -189,5 +190,5 @@ migration workflow, and seed credentials.
 
 ## Development roadmap
 
-Development continues one section at a time. The next section will expand the
-student and teacher dashboards.
+Development continues one section at a time. The next section will focus on UI
+polish, accessibility, reusable feedback components, testing, and documentation.
