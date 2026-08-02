@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { slugifyTitle } from '../../src/features/courses/schemas/courseSchema.ts'
 import { getRecentLesson, getRecentLessonRecord, saveRecentLesson } from '../../src/features/progress/utils/recentLesson.ts'
+import { handleSessionExpiry } from '../../src/features/auth/services/sessionEvents.ts'
 
 const storage = new Map<string, string>()
 
@@ -22,5 +23,13 @@ describe('frontend utilities', () => {
     expect(getRecentLesson('student-1', 'course-1')).toBe('lesson-2')
     expect(getRecentLesson('student-2', 'course-1')).toBeNull()
     expect(getRecentLessonRecord('student-1', 'course-1')?.openedAt).toBeTruthy()
+  })
+
+  it('announces an expired session for unauthorized API responses', () => {
+    const dispatchEvent = vi.fn()
+    vi.stubGlobal('window', { dispatchEvent })
+    handleSessionExpiry(new Response(null, { status: 401 }))
+    expect(dispatchEvent).toHaveBeenCalledOnce()
+    expect(dispatchEvent.mock.calls[0]?.[0]).toMatchObject({ type: 'online-school:session-expired' })
   })
 })
